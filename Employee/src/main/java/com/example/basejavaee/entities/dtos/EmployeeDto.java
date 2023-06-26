@@ -10,9 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDto {
-    public String FullName;
-    public String Birthday;
-    public String Address;
-    public String Position;
-    public String Department;
+    public String full_name;
+    public String birthday;
+    public String address;
+    public String position;
+    public String department;
 }

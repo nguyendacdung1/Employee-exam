@@ -15,18 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeConnector {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/db-exam-1?useSSL=false";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/employees?useSSL=false";
     private String jdbcUsername = "root";
     private String jdbcPassword = "";
 
-    private static final String INSERT_EMPLOYEE = "INSERT INTO employee" + "  (FullName, Birthday, Address, Position, Department) VALUES " +
+    private static final String INSERT_EMPLOYEE = "INSERT INTO employees" + "  (full_name, birthday, address, position, department) VALUES " +
             " (?, ?, ?, ?, ?);";
-
-    private static final String SELECT_EMPLOYEE_ID = "select ID,FullName, Birthday, Address, Position, Department from employee where ID =?";
-    private static final String SELECT_ALL = "select * from employee";
-    private static final String DELETE = "delete from employee where ID = ?;";
-    private static final String DELETE_ALL = "delete from employee";
-    private static final String UPDATE = "update employee set FullName = ?,Birthday= ?, Address = ?,Position= ?, Department =? where ID = ?;";
+    private static final String SELECT_ALL = "select * from employees";
+    private static final String SELECT_EMPLOYEE_ID = "select id,full_name, birthday, address, position, department from employees where id =?";
+    private static final String DELETE = "delete from employees where id = ?;";
+    private static final String DELETE_ALL = "delete from employees";
+    private static final String UPDATE = "update employees set full_name = ?,birthday= ?, address = ?,position= ?, department =? where id = ?;";
 
     protected synchronized Connection getConnection() {
         Connection connection = null;
@@ -44,7 +43,7 @@ public class EmployeeConnector {
     public void insertEmployee(Employee employee) throws SQLException {
         System.out.println(INSERT_EMPLOYEE);
         try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_EMPLOYEE)) {
-            preparedStatement.setString(1, employee.getFullName());
+            preparedStatement.setString(1, employee.getFull_name());
             preparedStatement.setString(2, employee.getBirthday());
             preparedStatement.setString(3, employee.getAddress());
             preparedStatement.setString(4, employee.getPosition());
@@ -56,20 +55,20 @@ public class EmployeeConnector {
         }
     }
 
-    public Employee selectEmployee(int ID) {
+    public Employee selectEmployee(int id) {
         Employee employee = null;
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EMPLOYEE_ID);) {
-            preparedStatement.setInt(1, ID);
+            preparedStatement.setInt(1, id);
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                String FullName = rs.getString("FullName");
-                String Birthday = rs.getString("Birthday");
-                String Address = rs.getString("Address");
-                String Position = rs.getString("Position");
-                String Department = rs.getString("Department");
-                employee = new Employee(ID, FullName, Birthday, Address, Position, Department);
+                String full_name = rs.getString("full_name");
+                String birthday = rs.getString("birthday");
+                String address = rs.getString("address");
+                String position = rs.getString("position");
+                String department = rs.getString("department");
+                employee = new Employee(id, full_name, birthday, address, position, department);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -84,13 +83,13 @@ public class EmployeeConnector {
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int ID = rs.getInt("ID");
-                String FullName = rs.getString("FullName");
-                String Birthday = rs.getString("Birthday");
-                String Address = rs.getString("Address");
-                String Position = rs.getString("Position");
-                String Department = rs.getString("Department");
-                employees.add(new Employee(ID, FullName, Birthday, Address, Position, Department));
+                int id = rs.getInt("id");
+                String full_name = rs.getString("full_name");
+                String birthday = rs.getString("birthday");
+                String address = rs.getString("address");
+                String position = rs.getString("position");
+                String department = rs.getString("department");
+                employees.add(new Employee(id, full_name, birthday, address, position, department));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -118,12 +117,12 @@ public class EmployeeConnector {
     public boolean updateEmployee(Employee employee) throws SQLException {
         boolean rowUpdated;
         try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE);) {
-            statement.setString(1, employee.getFullName());
+            statement.setString(1, employee.getFull_name());
             statement.setString(2, employee.getBirthday());
             statement.setString(3, employee.getAddress());
             statement.setString(4, employee.getPosition());
             statement.setString(5, employee.getDepartment());
-            statement.setInt(6, employee.getID());
+            statement.setInt(6, employee.getId());
 
             rowUpdated = statement.executeUpdate() > 0;
         }

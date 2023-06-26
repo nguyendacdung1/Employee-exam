@@ -11,10 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee extends BaseEntity {
-    public int ID;
-    public String FullName;
-    public String Birthday;
-    public String Address;
-    public String Position;
-    public String Department;
+    public int id;
+    public String full_name;
+    public String birthday;
+    public String address;
+    public String position;
+    public String department;
 }

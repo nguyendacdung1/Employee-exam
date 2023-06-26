@@ -80,8 +80,8 @@ public class UserServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int ID = Integer.parseInt(request.getParameter("ID"));
-        Employee employee = employeeConnector.selectEmployee(ID);
+        int id = Integer.parseInt(request.getParameter("id"));
+        Employee employee = employeeConnector.selectEmployee(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("employee-form.jsp");
         request.setAttribute("employee", employee);
         dispatcher.forward(request, response);
@@ -90,40 +90,40 @@ public class UserServlet extends HttpServlet {
 
     private void insertEmployee(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        String FullName = request.getParameter("FullName");
-        String Birthday = request.getParameter("Birthday");
-        String Address = request.getParameter("Address");
-        String Position = request.getParameter("Position");
-        String Department = request.getParameter("Department");
-        EmployeeDto employeeDto = new EmployeeDto(FullName, Birthday, Address, Position, Department);
+        String full_name = request.getParameter("full_name");
+        String birthday = request.getParameter("birthday");
+        String address = request.getParameter("address");
+        String position = request.getParameter("position");
+        String department = request.getParameter("department");
+        EmployeeDto employeeDto = new EmployeeDto(full_name, birthday, address, position, department);
         Employee newEmployee = new Employee();
-        newEmployee.FullName = employeeDto.FullName;
-        newEmployee.Birthday = employeeDto.Birthday;
-        newEmployee.Address = employeeDto.Address;
-        newEmployee.Position = employeeDto.Position;
-        newEmployee.Department = employeeDto.Department;
+        newEmployee.full_name = employeeDto.full_name;
+        newEmployee.birthday = employeeDto.birthday;
+        newEmployee.address = employeeDto.address;
+        newEmployee.position = employeeDto.position;
+        newEmployee.department = employeeDto.department;
         employeeConnector.insertEmployee(newEmployee);
         response.sendRedirect("list");
     }
 
     private void updateEmployee(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int ID = Integer.parseInt(request.getParameter("ID"));
-        String FullName = request.getParameter("FullName");
-        String Birthday = request.getParameter("Birthday");
-        String Address = request.getParameter("Address");
-        String Position = request.getParameter("Position");
-        String Department = request.getParameter("Department");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String full_name = request.getParameter("full_name");
+        String birthday = request.getParameter("birthday");
+        String address = request.getParameter("address");
+        String position = request.getParameter("position");
+        String department = request.getParameter("department");
 
-        Employee book = new Employee(ID, FullName, Birthday, Address, Position, Department);
+        Employee book = new Employee(id, full_name, birthday, address, position, department);
         employeeConnector.updateEmployee(book);
         response.sendRedirect("list");
     }
 
     private void deleteEmployee(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int ID = Integer.parseInt(request.getParameter("ID"));
-        employeeConnector.deleteEmployee(ID);
+        int id = Integer.parseInt(request.getParameter("id"));
+        employeeConnector.deleteEmployee(id);
         response.sendRedirect("list");
 
     }
